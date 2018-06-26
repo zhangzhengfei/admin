@@ -1,0 +1,110 @@
+Linux常用命令：
+	创建文件：
+		vi file.txt:
+			创建一个txt文件并直接进入vi界面进行文件修改内容。
+		touch filename.txt
+			创建文件，在使用vi命令进行编辑。
+
+linux安装jdk：
+	授权：	chmod +x jdk-8u101-linux-x64.rpm
+		rpm -ivh jdk-8u101-linux-x64.rpm
+	设置环境变量：
+		profile
+Linux设置无密钥登录：
+	为何设置：
+		ssh localhost时每次都要求输入密码才能登录上去，设置以后就不用每次都输入密码了
+	执行以下命令：
+		ssh -keygen或者    ssh-keygen
+		一路回车
+		cd ~/.ssh
+		cd /.ssh文件夹中，查看生成的文件，id_rsa   id_rsa.pub
+		新建一个文件：
+			touch authorized_keys，并将id_rsa.pub中的内容写入到这个新建的文件中。
+			cat id_rsa.pub>authorized_keys
+		设置权限：
+			chmod 600 authorized_keys
+
+mysql启动：
+	service mysqld start
+mysql登录：
+	mysql -uuser -p passwd 
+mysql停止：
+	service mysqld stop
+查看cpu型号：
+	cat /proc/cpuinfo | grep name | cut -f2 -d: | uniq -c
+查看物理CPU个数
+	cat /proc/cpuinfo| grep "physical id"| sort| uniq| wc -l
+查看每个物理CPU中core的个数(即核数)
+	cat /proc/cpuinfo| grep "cpu cores"| uniq
+查看逻辑CPU的个数
+	cat /proc/cpuinfo| grep "processor"| wc -l
+
+
+
+
+linux无法上网时解决方法：
+	vi /etc/resolv.conf
+			内容如下：
+				nameserver 8.8.8.8 #google域名服务器
+				nameserver 8.8.4.4 #google域名服务器
+
+useradd testuser  创建用户testuser
+passwd testuser  给已创建的用户testuser设置密码
+groupdel users    删除组users
+userdel user2     删除用户user2
+
+
+
+开放端口的方法：
+
+命令行方式
+               1. 开放端口命令： /sbin/iptables -I INPUT -p tcp --dport 8080 -j ACCEPT
+               2.保存：/etc/rc.d/init.d/iptables save
+               3.重启服务：/etc/init.d/iptables restart
+               4.查看端口是否开放：/sbin/iptables -L -n
+
+防火墙：
+	 service iptables status  查看防火墙状态
+	 service iptables start	  启动防火墙策略
+	 service iptables stop	  关闭防火墙策略
+pip升级
+	python -m pip install --upgrade pip
+
+改目录所属用户：
+	chown hdfs:hdfs 目录名/文件名
+linux服务器之间的文件复制
+	scp /home/airflow/dags/*  10.140.67.46:/home/airflow/dags/    设置了ssh无密码访问时
+	scp /home/airflow/dags/*  username@10.140.67.46:/home/airflow/dags/  需要输入用户密码
+
+查看cpu使用情况：
+	top -bn 1 -i -c
+
+%us：表示用户空间程序的cpu使用率（没有通过nice调度）
+
+%sy：表示系统空间的cpu使用率，主要是内核程序。
+
+%ni：表示用户空间且通过nice调度过的程序的cpu使用率。
+
+%id：空闲cpu
+
+%wa：cpu运行时在等待io的时间
+
+%hi：cpu处理硬中断的数量
+
+%si：cpu处理软中断的数量
+
+%st：被虚拟机偷走的cpu
+
+查看CPU信息（型号） 
+	cat /proc/cpuinfo | grep name | cut -f2 -d: | uniq -c 
+
+查看磁盘信息：	df -h
+
+获取服务器当前时间：date
+
+查看内存信息：free -m
+
+查看服务器内存使用占用前十名：
+	ps aux|head -1;ps aux|grep -v PID|sort -rn -k +4|head
+查看服务器cpu使用占用前十名：
+	ps aux|head -1;ps aux|grep -v PID|sort -rn -k +3|head

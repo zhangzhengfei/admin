@@ -1,0 +1,16 @@
+java时间格式为Tue Jun 26 11:38:46 CST 2018的字符串转化为标准时间格式
+String str = Tue Jun 26 11:38:46 CST 2018
+SimpleDateFormat sdf1 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
+SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+String serverTime = sdf2.format(sdf1.parse(time));
+
+把字符串之间所有的空格都用单个空格代替，例如 ：
+	str = "aaa   bb vvv   ss";
+	str = str.replaceAll("\\s+", " ");
+	str = "aaa bb vvv ss"
+
+java解析yml文件为map：
+
+  Yaml yaml = new Yaml();
+  URL url = ServerMonitorServerImpl.class.getClassLoader().getResource("serverinfo.yml");
+  Map<String, Map<String, String>> map = (Map) yaml.load(new FileInputStream(url.getFile()));
